@@ -1,11 +1,16 @@
 {
-  "name": "bankline-api",
+  "name": "internet-banking-api",
+  "version": "1.0.0",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.16.2"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js" 
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/glaucia86/auth-nodejs-jwt"
+    "url": "https://github.com/felipenasr/internet-banking-api"
   }
 }

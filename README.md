@@ -10,3 +10,9 @@
 ```
 npm install
 ```
+
+### To run server: 
+
+```
+npm run start
+```
