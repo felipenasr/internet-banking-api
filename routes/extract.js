@@ -10,6 +10,6 @@ module.exports = (app) => {
         response.send({
             "teste": "teste"
         })
-    
     });
+    
 }
