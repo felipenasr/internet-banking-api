@@ -16,3 +16,4 @@ let User = mongoose.model('Client', new Schema({
   
 }))
 
+module.exports = User;

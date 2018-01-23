@@ -1,8 +1,5 @@
+let mongo = require('../infra/connectionFactory');
 let crypto = require('../infra/crypto');
-
-let cri = crypto.crypt('felipe');
-console.log("CRIPOTOGRAFADO:", cri);
-console.log(crypto.decrypt(cri));
 
 module.exports = (app) => {
     app.get('/api/login', (request, response) => {
@@ -12,8 +9,25 @@ module.exports = (app) => {
         })
     }); 
     app.post('/api/login', (request, response) => {
-        console.log(request.headers.body);
-        response.send({
+        let result = request.body;
+        let passCript = crypto.crypt(result.pass);
+
+
+        mongo.connection.then(mongoDB => {
+            dbo = mongoDB.db(mongo.database);
+            
+            dbo.collection("clients").findOne({cpf: result.user}).then( res => {
+                if(passCript == res.token){
+                    response.send({"token": "token"});
+                }else{
+                    response.send({'error': 'Senha incorreta'});
+                }
+            }).catch(err => { response.send({'error': 'Usuário não encontrado'}) });
         })
     }); 
 }
+
+
+
+
+    

@@ -17,3 +17,4 @@ npm install
 npm run start
 ```
 
+### API RUNING AT http://34.200.116.240/api/

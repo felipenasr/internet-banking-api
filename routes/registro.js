@@ -7,9 +7,9 @@ let felipe = {
     alias: "lelekona 2000",
     gender: "leticinha",
     birth: "21/06/1993",
-    cpf: "5645456445646",
+    cpf: "123456",
     email: "lele_doidera@chatdauol.net",
-    token: "ertyuiokjhgfdcvbnm",
+    token: "123456",
     balance: 9000000
 }
 
