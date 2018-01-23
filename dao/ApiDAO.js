@@ -1,6 +1,5 @@
 let mongo = require('../infra/connectionFactory');
-let assert = require('assert');
-let crypto = require('../infra/crypto');
+
 
 
 // Roda o autoincrement da conta
