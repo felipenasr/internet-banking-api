@@ -1,4 +1,5 @@
 let mongo = require('../infra/connectionFactory');
+let crypto = require('../infra/crypto');
 
 
 
