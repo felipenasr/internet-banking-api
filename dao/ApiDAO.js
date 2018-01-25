@@ -38,7 +38,7 @@ let Dao = {
                     user._id = res.seq;
                     user.account_number = getAccount(res.account);
                     user.token = crypto.crypt(user.token);
-                    console.log(res.seq);
+                    console.log(user);
                     dbo.collection("clients").insertOne(user).then(res => res).catch(err => { console.error(err) });
                     autoIncrement(res.seq, res.account);
                 }).catch((err) => { console.error(err) });

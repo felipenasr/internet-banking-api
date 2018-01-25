@@ -3,7 +3,7 @@
 let dao = require('../dao/ApiDAO');
 
 let felipe = {
-    name: "leticia martin",
+    name: "felipe ricci",
     alias: "lelekona 2000",
     gender: "leticinha",
     birth: "21/06/1993",
