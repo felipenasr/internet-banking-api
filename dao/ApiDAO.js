@@ -1,10 +1,5 @@
 let mongo = require('../infra/connectionFactory');
 let crypto = require('../infra/crypto');
-<<<<<<< HEAD
-=======
-
->>>>>>> 18b24e7bad95ed048340717edf2e9f820182e0df
-
 
 // Roda o autoincrement da conta
 let autoIncrement = (id, account) => {
