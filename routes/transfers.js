@@ -8,9 +8,10 @@ module.exports = (app) => {
         let validToken = jwt.verify(result.token);;
         result.date = new Date().toString()
         let transfer = {};
+        transfer.date = new Date().toString();
         let _balances ={}
         transfer.account_number_dest = result.account_number_dest;              
-
+        
         if(validToken){
             console.log((parseFloat(result.value)));
             if((parseFloat(result.value))  <=  0 ){
@@ -21,9 +22,11 @@ module.exports = (app) => {
                 dbo = mongoDB.db(mongo.database);
                 dbo.collection('clients').findOne({ cpf: validToken.user })
                 .then(res => {
-
+                    console.log(res.account_number)
+                    console.log(result.account_number_dest)
                     if(res.account_number == result.account_number_dest){
                         response.send({"error": "Você não pode transferir dinheiro para sua própria conta"})
+                    
                     }else{
 
                         transfer.account_number_origin = res.account_number;
@@ -61,8 +64,7 @@ module.exports = (app) => {
                                 }
                                 
                                 return res;
-                        }).catch(err =>  err );
-                    
+                        }).catch(err =>  {response.send({error: "Conta inválida"})} );
                         return res;
                     }
                 }).catch(err => { err });
