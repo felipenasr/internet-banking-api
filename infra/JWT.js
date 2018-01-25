@@ -7,8 +7,8 @@ let generateJWT = ()=>{
     return {
         token: (user, pass) => {
             return jwt.sign({
-                login: 'teste',
-                senha: '123456',
+                user: user,
+                pass: pass,
                 accessLevel: 'admin'
             }, 
                 secret,{
@@ -19,7 +19,7 @@ let generateJWT = ()=>{
 
         verify: (token)=> {
             return jwt.verify(token, secret, (erro, token)=>{
-                console.log(token);
+                return token;
             })
         }
         

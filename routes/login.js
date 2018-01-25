@@ -3,14 +3,10 @@ let crypto = require('../infra/crypto');
 let jwt = require('../infra/JWT');
 
 module.exports = (app) => {
-    app.get('/api/login', (request, response) => {
-        response.send()
-    }); 
 
     app.post('/api/login', (request, response) => {
         let result = request.body;
         let passCript = crypto.crypt(result.pass);
-        console.log(result);
 
         mongo.connection.then(mongoDB => {
             dbo = mongoDB.db(mongo.database);
