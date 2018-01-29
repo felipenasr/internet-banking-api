@@ -16,8 +16,6 @@ module.exports = (app) => {
                     let token = jwt.token(result.user, result.token);
                     response.send({"token": token});
                 }else{
-                    console.log(`SENHA INPUT -> `, passCript);
-                    console.log(`SENHA BANCO ->`, res.token)                                        
                     response.send({'error': 'Senha incorreta'});
                 }
             }).catch(err => { response.send({'error': 'Usuário não encontrado'}) });
