@@ -17,14 +17,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felipenasr/internet-banking-api.git"
-  },
-  "description": "- Node 6+.\r - MongoDB 3+",
-  "bugs": {
-    "url": "https://github.com/felipenasr/internet-banking-api/issues"
-  },
-  "homepage": "https://github.com/felipenasr/internet-banking-api#readme",
-  "devDependencies": {},
-  "author": "",
-  "license": "ISC"
-}
+    "url": "https://github.com/felipenasr/internet-banking-api"
+  }
+} 
