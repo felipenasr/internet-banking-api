@@ -17,9 +17,8 @@ module.exports = (app) => {
                         account: res.account_number,
                         email: res.email
                     }
-                    console.log(abstration);
                     response.send(abstration);
-                }).catch(err => { console.error(err)});    
+                }).catch(err => { response.send({"error": "Erro inesperado"}) } );    
             }else{
                 response.send({"error": "Token Inválido"});                    
             }

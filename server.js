@@ -6,8 +6,6 @@ const cors = require('cors');
 const morgan = require('morgan');
 const SECRETKEY = "TESTE";
     
-// Permite receber: application/json
-app.use(bodyParser.json());
 
 // Habilita o CORS
 app.use(cors());

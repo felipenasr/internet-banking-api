@@ -15,7 +15,7 @@ module.exports = (app) => {
         if(validToken){
             console.log((parseFloat(result.value)));
             if((parseFloat(result.value))  <=  0 ){
-                response.send({"error": "Você não pode transferir valores negativos"})                
+                response.send({error: "Você não pode transferir valores negativos"})                
             }else{
 
             mongo.connection.then(mongoDB => {
@@ -25,7 +25,7 @@ module.exports = (app) => {
                     console.log(res.account_number)
                     console.log(result.account_number_dest)
                     if(res.account_number == result.account_number_dest){
-                        response.send({"error": "Você não pode transferir dinheiro para sua própria conta"})
+                        response.send({error: "Você não pode transferir dinheiro para sua própria conta"})
                     
                     }else{
 
@@ -60,7 +60,7 @@ module.exports = (app) => {
                                     response.send({"success": true});
 
                                 }else{
-                                    response.send({'error': 'Saldo insuficiente'});
+                                    response.send({error: 'Saldo insuficiente'});
                                 }
                                 
                                 return res;
@@ -89,7 +89,7 @@ module.exports = (app) => {
             }
             
         }else{
-                response.send({"error": "Token inválido"});
+                response.send({error: "Token inválido"});
         }
     });
 }
