@@ -11,7 +11,6 @@ module.exports = (app) => {
         mongo.connection.then(mongoDB => {
             dbo = mongoDB.db(mongo.database);
             dbo.collection("clients").findOne({cpf: result.user}).then( res => {
-                console.log(result)
                 if(passCript == res.token){
                     let token = jwt.token(result.user, result.token);
                     response.send({"token": token});

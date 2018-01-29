@@ -1,7 +1,9 @@
+const cors = require('cors');
+
+
 const app = require('./express-config');
 const seed = require('./infra/seed_users.js')
 
-const cors = require('cors');
 
 // Habilita o CORS
 app.use(cors());
