@@ -1,20 +1,14 @@
 const app = require('./express-config');
+const seed = require('./infra/seed_users.js')
 
-
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const morgan = require('morgan');
-const SECRETKEY = "TESTE";
-    
 
 // Habilita o CORS
 app.use(cors());
 
-//
-app.use(morgan('dev'));
 
-app.set('superSecret', SECRETKEY);
-
+// SEED DE USUARIOS
+seed();
 
 
 // Listen e qual porta

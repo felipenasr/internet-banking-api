@@ -1,11 +1,11 @@
 let mongo = require('../infra/connectionFactory');
 let jwt = require('../infra/JWT');
-
+let crypto = require('../infra/crypto');
 
 module.exports = (app) => {
     app.post('/api/transfers', (request, response) => {
         let result = request.body;
-        let validToken = jwt.verify(result.token);;
+        let validToken = jwt.verify(result.token);
         result.date = new Date().toString()
         let transfer = {};
         transfer.date = new Date().toString();
@@ -13,7 +13,6 @@ module.exports = (app) => {
         transfer.account_number_dest = result.account_number_dest;              
         
         if(validToken){
-            console.log((parseFloat(result.value)));
             if((parseFloat(result.value))  <=  0 ){
                 response.send({error: "Você não pode transferir valores negativos"})                
             }else{
@@ -22,8 +21,6 @@ module.exports = (app) => {
                 dbo = mongoDB.db(mongo.database);
                 dbo.collection('clients').findOne({ cpf: validToken.user })
                 .then(res => {
-                    console.log(res.account_number)
-                    console.log(result.account_number_dest)
                     if(res.account_number == result.account_number_dest){
                         response.send({error: "Você não pode transferir dinheiro para sua própria conta"})
                     
@@ -55,16 +52,23 @@ module.exports = (app) => {
                                     .catch(err=>{console.error(err)});
                                     
                                     
-                                    dbo.collection("transfers").insertOne(transfer)
-                                    .then(res => {res}).catch(err => { console.error(err) });
-                                    response.send({"success": true});
+                                    dbo.collection('transfers').insertOne(transfer)
+                                    .then(res => {
+                                        let log = `${transfer.date}:::::: A conta ${transfer.account_number_origin} transferiu ${transfer.value} para a conta ${transfer.account_number_dest}`;
+                                        console.log(log);
+                                        log = crypto.crypt(log);
+                                        dbo.collection("log_col").insertOne({log}).then(res => res).catch(err => {console.log(err)});
+                                        return res;
+
+                                    }).catch(err => { console.error(err) });
+                                    response.send({'success': true});
 
                                 }else{
                                     response.send({error: 'Saldo insuficiente'});
                                 }
                                 
                                 return res;
-                        }).catch(err =>  {response.send({error: "Conta inválida"})} );
+                        }).catch(err =>  {response.send({error: 'Conta inválida'})} );
                         return res;
                     }
                 }).catch(err => { err });
@@ -89,7 +93,7 @@ module.exports = (app) => {
             }
             
         }else{
-                response.send({error: "Token inválido"});
+                response.send({error: 'Token inválido'});
         }
     });
 }

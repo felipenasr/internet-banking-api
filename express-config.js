@@ -20,6 +20,5 @@ require('./routes/login')(app);
 require('./routes/user')(app);
 require('./routes/transfers')(app);
 require('./routes/extract')(app);
-require('./routes/registro')(app);
 
 module.exports = app;
