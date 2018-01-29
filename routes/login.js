@@ -10,13 +10,14 @@ module.exports = (app) => {
         let passCript = crypto.crypt(result.pass);
         mongo.connection.then(mongoDB => {
             dbo = mongoDB.db(mongo.database);
-            console.log(result.user)
             dbo.collection("clients").findOne({cpf: result.user}).then( res => {
                 console.log(result)
                 if(passCript == res.token){
                     let token = jwt.token(result.user, result.token);
                     response.send({"token": token});
                 }else{
+                    console.log(`SENHA INPUT -> `, passCript);
+                    console.log(`SENHA BANCO ->`, res.token)                                        
                     response.send({'error': 'Senha incorreta'});
                 }
             }).catch(err => { response.send({'error': 'Usuário não encontrado'}) });
