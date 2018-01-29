@@ -1,5 +1,6 @@
 const data = require('./seeds.js');
 let mongo = require('./connectionFactory.js');
+let crypt = require('./../infra/crypto.js')
 
 let account = 3000;
 
@@ -28,9 +29,11 @@ module.exports = () => {
             if(res){
                 return res;
             }else{
+                dbo.collection('counters').insertOne({ "_id" : "userid", "seq" : 0, "account" : 3000 }).then(res=>res).catch(err=>err);
                 data.forEach((value, index) => {
                     value._id = index;
                     let user_account = account+index;
+                    value.token = crypt.crypt(value.token);
                     value.account_number = getAccount(user_account);
                     dbo.collection('clients').insertOne(value).then(res => res).catch(err => err);
                 })

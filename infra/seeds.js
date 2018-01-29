@@ -56,5 +56,23 @@ module.exports = [{
 	email: "kaiqueexp@gmail.com",
 	token: "102030",
 	balance: 3200
+},{
+    name: "Rafael Paiva",
+    alias: "@paiva",
+    gender: "masculino",
+    birth: "11/09/1985",
+    cpf: "31391846893",
+    email: "r.paivabr@gmail.com",
+    token: "123456",
+    balance: 5300  
+},{
+    name: "Murilo Motta",
+    alias: "@murilo",
+    gender: "masculino",
+    birth: "13/05/1986",
+    cpf: "34965897870",
+    email: "murilo.gomes.motta@gmail.com",
+    token: "101020",
+    balance: 3200
 }
 ]
