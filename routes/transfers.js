@@ -24,9 +24,9 @@ module.exports = (app) => {
                 dbo.collection('clients').findOne({ cpf: validToken.user })
                 .then(res => {
                     let passCritp = crypto.crypt(result.senha);
-                    if(passCritp == cpf.token){
-                        let newToken = jwt.token(cpf.cpf, passCritp);
-
+                    let newToken = jwt.token(res.cpf, passCritp);                                              
+                    
+                    if(passCritp == res.token){
 
                         if(res.account_number == result.account_number_dest){
                             response.send({error: "Você não pode transferir dinheiro para sua própria conta"})
