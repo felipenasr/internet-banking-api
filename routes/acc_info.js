@@ -19,7 +19,7 @@ module.exports = (app) => {
                     }
 
                     response.send(abstration);
-                }).catch(err => { console.error(err); response.send({"error": "Erro inesperado"}) } );    
+                }).catch(err => { console.error(err);   response.send({"error": "Erro inesperado"}) } );    
             }else{
                 response.send({"error": "Token Inválido"});                    
             }
