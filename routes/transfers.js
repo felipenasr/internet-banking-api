@@ -14,7 +14,7 @@ module.exports = (app) => {
         
         if(validToken){
             if((parseFloat(result.value))  <=  0 ){
-                response.send({error: "Você não pode transferir valores negativos"})                
+                response.send({error: "Você não pode transferir valores menores ou iguais a 0"});
             }else{
 
             mongo.connection.then(mongoDB => {
@@ -57,11 +57,14 @@ module.exports = (app) => {
                                         let log = `${transfer.date}:::::: A conta ${transfer.account_number_origin} transferiu ${transfer.value} para a conta ${transfer.account_number_dest}`;
                                         console.log(log);
                                         log = crypto.crypt(log);
-                                        dbo.collection("log_col").insertOne({log}).then(res => res).catch(err => {console.log(err)});
+                                        dbo.collection("log_col").insertOne({log}).then(res => {
+                                            let ops = res.ops[0];
+                                            response.send({'success': true, hash: ops._id});
+                                            return res;
+                                        }).catch(err => {console.error(err)});
                                         return res;
 
                                     }).catch(err => { console.error(err) });
-                                    response.send({'success': true});
 
                                 }else{
                                     response.send({error: 'Saldo insuficiente'});
