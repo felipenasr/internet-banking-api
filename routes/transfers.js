@@ -98,12 +98,6 @@ module.exports = (app) => {
                 if (Math.sign(result.value) === 1) {
                     transfer.value = result.value;
                 }
-                
-                //inserindo nova transferencia no banco
-                // mongo.connection.then(mongoDB => {
-                //     dbo = mongoDB.db(mongo.database);
-
-                // })
             }
             
         }else{

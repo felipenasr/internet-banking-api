@@ -14,6 +14,7 @@ app.use(function(req, res, next) {
 
 require('./routes/login')(app);
 require('./routes/user')(app);
+require('./routes/acc_info')(app);
 require('./routes/transfers')(app);
 require('./routes/extract')(app);
 
