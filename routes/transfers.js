@@ -13,6 +13,8 @@ module.exports = (app) => {
         transfer.account_number_dest = result.account_number_dest;              
         
         if(validToken){
+
+
             if((parseFloat(result.value))  <=  0 ){
                 response.send({error: "Você não pode transferir valores menores ou iguais a 0"});
             }else{
@@ -21,64 +23,73 @@ module.exports = (app) => {
                 dbo = mongoDB.db(mongo.database);
                 dbo.collection('clients').findOne({ cpf: validToken.user })
                 .then(res => {
-                    if(res.account_number == result.account_number_dest){
-                        response.send({error: "Você não pode transferir dinheiro para sua própria conta"})
-                    
-                    }else{
+                    let passCritp = crypto.crypt(result.senha);
+                    if(passCritp == cpf.token){
+                        let newToken = jwt.token(cpf.cpf, passCritp);
 
-                        transfer.account_number_origin = res.account_number;
-                        transfer.balance_origin = res.balance;                    
-                        _balances.origin = (parseFloat(res.balance)) - (parseFloat(result.value));
+
+                        if(res.account_number == result.account_number_dest){
+                            response.send({error: "Você não pode transferir dinheiro para sua própria conta"})
                         
-                        dbo.collection('clients')
-                            .findOne({account_number: transfer.account_number_dest})
-                            .then(res => {
-                                transfer.balance_dest = res.balance;
-                                _balances.dest = (parseFloat(res.balance)) + (parseFloat(result.value));                            
-                                
-                                if(_balances.origin > 0){
-                                    dbo.collection('clients')
-                                    .updateOne({account_number: transfer.account_number_dest},
-                                        {$set:{balance : _balances.dest}},
-                                        { upsert: true })
-                                        .then(res => res )
-                                    .catch(err=>{console.error(err)});
+                        }else{
+
+                            transfer.account_number_origin = res.account_number;
+                            transfer.balance_origin = res.balance;                    
+                            _balances.origin = (parseFloat(res.balance)) - (parseFloat(result.value));
+                            
+                            dbo.collection('clients')
+                                .findOne({account_number: transfer.account_number_dest})
+                                .then(res => {
+                                    transfer.balance_dest = res.balance;
+                                    _balances.dest = (parseFloat(res.balance)) + (parseFloat(result.value));                            
                                     
-                                    dbo.collection('clients')
-                                    .updateOne({account_number: transfer.account_number_origin},
-                                        {$set:{balance : _balances.origin}},
-                                        { upsert: true })
-                                        .then(res => res )
-                                    .catch(err=>{console.error(err)});
-                                    
-                                    
-                                    dbo.collection('transfers').insertOne(transfer)
-                                    .then(res => {
-                                        let log = `${transfer.date}:::::: A conta ${transfer.account_number_origin} transferiu ${transfer.value} para a conta ${transfer.account_number_dest}`;
-                                        console.log(log);
-                                        log = crypto.crypt(log);
-                                        dbo.collection("log_col").insertOne({log}).then(res => {
-                                            let ops = res.ops[0];
-                                            response.send({'success': true, hash: ops._id});
+                                    if(_balances.origin > 0){
+                                        dbo.collection('clients')
+                                        .updateOne({account_number: transfer.account_number_dest},
+                                            {$set:{balance : _balances.dest}},
+                                            { upsert: true })
+                                            .then(res => res )
+                                        .catch(err=>{console.error(err)});
+                                        
+                                        dbo.collection('clients')
+                                        .updateOne({account_number: transfer.account_number_origin},
+                                            {$set:{balance : _balances.origin}},
+                                            { upsert: true })
+                                            .then(res => res )
+                                        .catch(err=>{console.error(err)});
+                                        
+                                        
+                                        dbo.collection('transfers').insertOne(transfer)
+                                        .then(res => {
+                                            let log = `${transfer.date}:::::: A conta ${transfer.account_number_origin} transferiu ${transfer.value} para a conta ${transfer.account_number_dest}`;
+                                            console.log(log);
+                                            log = crypto.crypt(log);
+                                            dbo.collection("log_col").insertOne({log}).then(res => {
+                                                let ops = res.ops[0];
+                                                response.send({'success': true, hash: ops._id, token: newToken});
+                                                return res;
+                                            }).catch(err => {console.error(err)});
                                             return res;
-                                        }).catch(err => {console.error(err)});
-                                        return res;
 
-                                    }).catch(err => { console.error(err) });
+                                        }).catch(err => { console.error(err) });
 
-                                }else{
-                                    response.send({error: 'Saldo insuficiente'});
-                                }
-                                
-                                return res;
-                        }).catch(err =>  {response.send({error: 'Conta inválida'})} );
-                        return res;
+                                    }else{
+                                        response.send({error: 'Saldo insuficiente'});
+                                    }
+                                    
+                                    return res;
+                            }).catch(err =>  {response.send({error: 'Conta inválida'})} );
+                            return res;
+                        }
+
+                    }else{
+                        response.send({error: 'Senha inválida'});
                     }
-                }).catch(err => { err });
+                    
+                    }).catch(err => { response.send({error: 'Senha inválida'}) });
 
 
-            })
-
+                })
         }
             //consulta conta destino
             if(transfer.account_number_dest == transfer.account_number_origin){
